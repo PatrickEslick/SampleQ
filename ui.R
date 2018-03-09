@@ -14,14 +14,14 @@ shinyUI(fluidPage(
   
   # Application title
   titlePanel("Interpolated discharge data for QW sample times"),
+  fluidRow(
+    column(12, includeMarkdown("help.Rmd"))
+  ),
   
   fluidRow(
     column(2, textInput("stationID", "Location", value="", placeholder="12345678")),
     column(3, dateRangeInput("dateRangeInput", "Dates", start="2017-01-01", format="yyyy-mm-dd")),
-    column(6, includeMarkdown("otherTools.Rmd"))
-  ),
-  fluidRow(
-    column(3, sliderInput("maxDiff", "Maximum gap to use for interpolation", min=1, max=5, value=4, step=1))
+    column(4, sliderInput("maxDiff", "Maximum gap to use for interpolation (in hours)", min=1, max=5, value=4, step=1))
   ),
   fluidRow(
     column(8,

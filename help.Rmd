@@ -1,0 +1,30 @@
+---
+title: "SampleQ Help"
+author: "Patrick Eslick"
+date: "March 9, 2018"
+---
+
+### What this app does
+
+This app gets a list of sample start times from the QWDATA NWIS web service, along with any discharge (Q) and gage height (GHT) measurements associated with the sample in QWDATA. The sample start times are then used to interpolate a value for discharge and gage height between the continuous time series points immediately before and after the sample.
+
+### Using the app
+
+1. Type the USGS site number in the **Location** box.
+2. Type (or select) start and end dates in the Dates boxes.
+3. Select the maximum gap to use for interpolation. Time series values will only be interpolated if there are two points before and after the sample that are within this many hours of each other.
+4. Click "Get data" to display results.
+5. Click "Download" to download a csv file of the results.
+
+### Headings in the output file
+
+**datetime** - the start time of the sample from the NWIS web service  
+**QW_Q** - the discharge associated with the sample in QWDATA  
+**QW_GHT** - the gage height associated with the sample in QWDATA  
+**TS_Q** - the discharge interpolated from the continuous discharge time series  
+**TS_GHT** - the gage height interpolated from the continuous gage height time series 
+
+### Other tools
+
+[CorrectionMagnitude](http://kswsc.cr.usgs.gov:3838/peslick/CorrectionMagnitude/) - get data about correction magnitudes, grades, and unapproved periods
+
