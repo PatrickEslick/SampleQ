@@ -6,7 +6,7 @@ date: "March 9, 2018"
 
 ### What this app does
 
-This app gets a list of sample start times from the QWDATA NWIS web service, along with any discharge (Q) and gage height (GHT) measurements associated with the sample in QWDATA. The sample start times are then used to interpolate a value for discharge and gage height between the continuous time series points immediately before and after the sample.
+This app gets a list of sample start times from the [QW NWIS web service](https://nwis.waterdata.usgs.gov/nwis/qwdata), along with any discharge (Q) and gage height (GHT) measurements associated with the sample in QWDATA. The sample start times are then used to interpolate a value for discharge and gage height between the continuous time series points immediately before and after the sample.
 
 ### Using the app
 
@@ -19,10 +19,10 @@ This app gets a list of sample start times from the QWDATA NWIS web service, alo
 ### Headings in the output file
 
 **datetime** - the start time of the sample from the NWIS web service  
-**QW_Q** - the discharge associated with the sample in QWDATA  
-**QW_GHT** - the gage height associated with the sample in QWDATA  
-**TS_Q** - the discharge interpolated from the continuous discharge time series  
-**TS_GHT** - the gage height interpolated from the continuous gage height time series 
+**QW_Q** - the discharge associated with the sample from the [QW NWIS web service](https://nwis.waterdata.usgs.gov/nwis/qwdata)    
+**QW_GHT** - the gage height associated with the sample in QW NWIS web service
+**TS_Q** - the discharge interpolated from the continuous discharge time series on the [NWIS web service](https://waterservices.usgs.gov/)  
+**TS_GHT** - the gage height interpolated from the continuous gage height time series on the NWIS web service
 
 ### Other tools
 
