@@ -26,17 +26,17 @@ getQGHT <- function(site, start, end) {
   Qname <- "X_00060_00000"
   QGHT <- readNWISuv(site, c("00060","00065"), start, end)
   if(nrow(QGHT) == 0) {
-    return(data.frame(datetime = vector(), Q = vector(), GHT = vector()))
+    return(data.frame(datetime = vector(), TS_Q = vector(), TS_GHT = vector()))
   }
   keep <- names(QGHT)[names(QGHT) %in% c("dateTime", "X_00060_00000", "X_00065_00000")]
   QGHT <- QGHT[,keep]
   if("X_00060_00000" %in% keep) {
-    names(QGHT)[names(QGHT) == "X_00060_00000"] <- "Q"
-    QGHT <- QGHT[QGHT$Q >= 0,]
+    names(QGHT)[names(QGHT) == "X_00060_00000"] <- "TS_Q"
+    QGHT <- QGHT[QGHT$TS_Q >= 0,]
   }
   if("X_00065_00000" %in% keep) {
-    names(QGHT)[names(QGHT) == "X_00065_00000"] <- "GHT"
-    QGHT <- QGHT[QGHT$GHT >= 0,]
+    names(QGHT)[names(QGHT) == "X_00065_00000"] <- "TS_GHT"
+    QGHT <- QGHT[QGHT$TS_GHT >= 0,]
   }
   names(QGHT)[names(QGHT) == "dateTime"] <- "datetime"
   return(QGHT)
