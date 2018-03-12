@@ -32,13 +32,12 @@ getQGHT <- function(site, start, end) {
   QGHT <- QGHT[,keep]
   if("X_00060_00000" %in% keep) {
     names(QGHT)[names(QGHT) == "X_00060_00000"] <- "TS_Q"
-    QGHT <- QGHT[QGHT$TS_Q >= 0,]
   }
   if("X_00065_00000" %in% keep) {
     names(QGHT)[names(QGHT) == "X_00065_00000"] <- "TS_GHT"
-    QGHT <- QGHT[QGHT$TS_GHT >= 0,]
   }
   names(QGHT)[names(QGHT) == "dateTime"] <- "datetime"
+  print(head(QGHT))
   return(QGHT)
 }
 
