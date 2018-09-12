@@ -36,3 +36,4 @@ If the app launched in the browser, its ready to use.
 3.  Adjust the slider to the maximum gap (in hours) between which you would like to interpolate. For example, if the slider is set at 4, but there is a gap in discharge of 5 hours around a sample time, no value will be given.
 4.  Click "Get data", a message will appear in the lower right corner indicating that the app is working. If something doesn't work, you will see an error message there. If everything works correctly, you will see a preview of the data.
 5.  To download the data to a csv file, click "Download"
+a
