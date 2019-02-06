@@ -9,6 +9,8 @@
 
 library(shiny)
 library(dataRetrieval)
+library(dplyr)
+library(smwrBase)
 source("functions.R")
 
 # Define server logic
@@ -20,10 +22,11 @@ shinyServer(function(input, output) {
     stationID <- input$stationID
     dateRange <- input$dateRangeInput
     maxDiff <- input$maxDiff
-    
+    method <- input$mergeMethod
+
     showNotification("Working...", duration=NULL, id="wrk")
     
-    sq <- getSampleQ(stationID, dateRange[1], dateRange[2], maxDiff)
+    sq <- getSampleQ(stationID, dateRange[1], dateRange[2], maxDiff, method)
     
     removeNotification("wrk")
     

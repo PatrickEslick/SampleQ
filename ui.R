@@ -21,7 +21,10 @@ shinyUI(fluidPage(
   fluidRow(
     column(2, textInput("stationID", "Location", value="", placeholder="12345678")),
     column(3, dateRangeInput("dateRangeInput", "Dates", start="2017-01-01", format="yyyy-mm-dd")),
-    column(4, sliderInput("maxDiff", "Maximum gap to use for interpolation (in hours)", min=1, max=5, value=4, step=1))
+    column(3, sliderInput("maxDiff", "Maximum gap to use for interpolation (in hours)", min=1, max=5, value=4, step=1)),
+    column(2, selectInput("mergeMethod", "Method to merge", 
+                          choices = c("Interpolate between two closest time series points" = "interpolate", 
+                                      "Use closest time series point" = "closest")))
   ),
   fluidRow(
     column(8,

@@ -1,11 +1,14 @@
 library(dataRetrieval)
+library(dplyr)
 
 #Get sample datetimes from NWIS
 getSampleTimes <- function(site, start, end) {
   #Get all qw results
-  qw <- try({readNWISqw(site, "All", startDate = start, endDate = end, reshape = TRUE)}, silent=TRUE)
-  if(class(qw) == "try-error")
+  qw <- try({readNWISqw(site, "All", startDate = start, endDate = end, reshape = TRUE, tz = "UTC")}, silent=TRUE)
+  if(class(qw) == "try-error") {
+    message(paste("Call to NWIS (readNWISqw) did not work for", site, "from", start, "to", end, "with reshape = TRUE"))
     return(0)
+  }
   #Retain the sample time and Q/GHT if they are there
   cols <- c("startDateTime", "result_va_00061", "result_va_00065")
   keep <- names(qw)[names(qw) %in% cols]
@@ -37,7 +40,6 @@ getQGHT <- function(site, start, end) {
     names(QGHT)[names(QGHT) == "X_00065_00000"] <- "TS_GHT"
   }
   names(QGHT)[names(QGHT) == "dateTime"] <- "datetime"
-  print(head(QGHT))
   return(QGHT)
 }
 
@@ -93,6 +95,21 @@ intDataVector <- function(lookup, datetimes, data, maxDiff=4) {
   
 }
 
+#closestDataVector
+# Purpose: find the closest value of a time series value for a series of times
+
+closestQGHT <- function(sample_data, cont_data, maxDiff = 4) {
+  
+  merged <- mergeNearest(sample_data, dates.left = "datetime", all.left = TRUE, suffix.left = "qw",
+                         cont_data, dates.right = "datetime", suffix.right = "ts",
+                         max.diff = paste(maxDiff, "hours")) %>%
+    rename(datetime = datetime.qw, datetime_TS = datetime.ts)
+  row.names(merged) <- NULL
+  merged$datetime_TS <- as.character(merged$datetime_TS, format="%Y-%m-%d %H:%M %Z")
+  return(merged)
+  
+}
+
 #Interpolate Q and GHT values for each sample time 
 intQGHT <- function(sample_data, cont_data, maxDiff = 4) {
   
@@ -116,7 +133,7 @@ intQGHT <- function(sample_data, cont_data, maxDiff = 4) {
   return(sample_data)
 }
 
-getSampleQ <- function(site, start, end, maxDiff = 4) {
+getSampleQ <- function(site, start, end, maxDiff = 4, method = "interpolate") {
   
   samples <- getSampleTimes(site, start, end)
   if(length(samples) == 0) {
@@ -126,7 +143,11 @@ getSampleQ <- function(site, start, end, maxDiff = 4) {
   if(nrow(qght) == 0) {
     return("No continuous data found")
   }
-  sampleQ <- intQGHT(samples, qght, maxDiff = maxDiff)
+  if(method == "closest") {
+    sampleQ <- closestQGHT(samples, qght, maxDiff = maxDiff)
+  } else if (method == "interpolate") {
+    sampleQ <- intQGHT(samples, qght, maxDiff = maxDiff)
+  }
   sampleQ$datetime <- as.character(sampleQ$datetime, format="%Y-%m-%d %H:%M %Z")
   return(sampleQ)
   
