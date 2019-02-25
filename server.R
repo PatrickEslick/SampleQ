@@ -23,10 +23,11 @@ shinyServer(function(input, output) {
     dateRange <- input$dateRangeInput
     maxDiff <- input$maxDiff
     method <- input$mergeMethod
+    tz <- input$timeZone
 
     showNotification("Working...", duration=NULL, id="wrk")
     
-    sq <- getSampleQ(stationID, dateRange[1], dateRange[2], maxDiff, method)
+    sq <- getSampleQ(stationID, dateRange[1], dateRange[2], maxDiff, method, tz = tz)
     
     removeNotification("wrk")
     

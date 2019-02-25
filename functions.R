@@ -2,9 +2,9 @@ library(dataRetrieval)
 library(dplyr)
 
 #Get sample datetimes from NWIS
-getSampleTimes <- function(site, start, end) {
+getSampleTimes <- function(site, start, end, tz = "UTC") {
   #Get all qw results
-  qw <- try({readNWISqw(site, "All", startDate = start, endDate = end, reshape = TRUE, tz = "UTC")}, silent=TRUE)
+  qw <- try({readNWISqw(site, "All", startDate = start, endDate = end, reshape = TRUE, tz = tz)}, silent=TRUE)
   if(class(qw) == "try-error") {
     message(paste("Call to NWIS (readNWISqw) did not work for", site, "from", start, "to", end, "with reshape = TRUE"))
     return(0)
@@ -25,9 +25,9 @@ getSampleTimes <- function(site, start, end) {
   return(qw)
 }
 
-getQGHT <- function(site, start, end) {
+getQGHT <- function(site, start, end, tz = "UTC") {
   Qname <- "X_00060_00000"
-  QGHT <- readNWISuv(site, c("00060","00065"), start, end)
+  QGHT <- readNWISuv(site, c("00060","00065"), start, end, tz = tz)
   if(nrow(QGHT) == 0) {
     return(data.frame(datetime = vector(), TS_Q = vector(), TS_GHT = vector()))
   }
@@ -133,13 +133,13 @@ intQGHT <- function(sample_data, cont_data, maxDiff = 4) {
   return(sample_data)
 }
 
-getSampleQ <- function(site, start, end, maxDiff = 4, method = "interpolate") {
+getSampleQ <- function(site, start, end, maxDiff = 4, method = "interpolate", tz = tz) {
   
-  samples <- getSampleTimes(site, start, end)
+  samples <- getSampleTimes(site, start, end, tz = tz)
   if(length(samples) == 0) {
     return("No samples found")
   }
-  qght <- getQGHT(site, start, end)
+  qght <- getQGHT(site, start, end, tz = tz)
   if(nrow(qght) == 0) {
     return("No continuous data found")
   }
