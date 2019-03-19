@@ -24,4 +24,6 @@ This app gets a list of sample start times from the [QW NWIS web service](https:
 **QW_GHT** - the gage height associated with the sample in QW NWIS web service  
 **datetime_TS** - this column will be included if the "Use closest time series point" option is selected. This indicates the date and time of the nearest time series point to the sample  
 **TS_Q** - the discharge interpolated (if using interpolation) from the continuous discharge time series on the [NWIS web service](https://waterservices.usgs.gov/)  
-**TS_GHT** - the gage height interpolated (if using interpolation) from the continuous gage height time series on the NWIS web service
+**TS_Q_cd** - the remark code associated with the discharge time series. If using interpolation, this is the remark code from the later point used for interpolation  
+**TS_GHT** - the gage height interpolated (if using interpolation) from the continuous gage height time series on the NWIS web service  
+**TS_GHT_cd** - the remark code associated with the gage height time series. If using interpolation, this is the remark code from the later point used for interpolation  
