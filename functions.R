@@ -31,13 +31,20 @@ getQGHT <- function(site, start, end, tz = "UTC") {
   if(nrow(QGHT) == 0) {
     return(data.frame(datetime = vector(), TS_Q = vector(), TS_GHT = vector()))
   }
-  keep <- names(QGHT)[names(QGHT) %in% c("dateTime", "X_00060_00000", "X_00065_00000")]
+  keep <- names(QGHT)[names(QGHT) %in% c("dateTime", "X_00060_00000", "X_00060_00000_cd", 
+                                         "X_00065_00000", "X_00065_00000_cd")]
   QGHT <- QGHT[,keep]
   if("X_00060_00000" %in% keep) {
     names(QGHT)[names(QGHT) == "X_00060_00000"] <- "TS_Q"
   }
+  if("X_00060_00000_cd" %in% keep) {
+    names(QGHT)[names(QGHT) == "X_00060_00000_cd"] <- "TS_Q_cd"
+  }
   if("X_00065_00000" %in% keep) {
     names(QGHT)[names(QGHT) == "X_00065_00000"] <- "TS_GHT"
+  }
+  if("X_00065_00000_cd" %in% keep) {
+    names(QGHT)[names(QGHT) == "X_00065_00000_cd"] <- "TS_GHT_cd"
   }
   names(QGHT)[names(QGHT) == "dateTime"] <- "datetime"
   return(QGHT)
@@ -74,7 +81,11 @@ intData <- function(t, datetimes, data, maxDiff=4) {
     if(tL > maxDiff) {
       out <- NA
     } else {
-      out <- (((d2 - d1) * tE) / tL) + d1
+      if(is.numeric(data)) {
+        out <- (((d2 - d1) * tE) / tL) + d1
+      } else {
+        out <- d2
+      }
     }
   }
   return(out)
@@ -133,7 +144,7 @@ intQGHT <- function(sample_data, cont_data, maxDiff = 4) {
   return(sample_data)
 }
 
-getSampleQ <- function(site, start, end, maxDiff = 4, method = "interpolate", tz = tz) {
+getSampleQ <- function(site, start, end, maxDiff = 4, method = "interpolate", tz = "UTC") {
   
   samples <- getSampleTimes(site, start, end, tz = tz)
   if(length(samples) == 0) {
